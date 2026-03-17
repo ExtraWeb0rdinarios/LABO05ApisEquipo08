@@ -1,4 +1,5 @@
 
+import { createClient } from '@supabase/supabase-js';
 /**
  * PASO 1: DATOS PRIMITIVOS (Configuración base)
  * Definimos valores básicos con tipado explícito para que el compilador sepa 
@@ -201,8 +202,8 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
  * PASO 1: CONFIGURACIÓN DE CONEXIÓN
  * Sustituye estos valores con los de tu proyecto en Supabase (Project Settings > API)
  */
-const SUPABASE_URL: string = "TU_URL_DE_SUPABASE";
-const SUPABASE_KEY: string = "TU_KEY";
+const SUPABASE_URL: string = "https://edowcwplnnnjpybtfcll.supabase.co/";
+const SUPABASE_KEY: string = "sb_publishable_JPTg658IAqNhWoEjwJTOXA_8GomTesc";
 
 /**
  * PASO 2: INICIALIZACIÓN DEL CLIENTE
@@ -210,7 +211,7 @@ const SUPABASE_KEY: string = "TU_KEY";
  */
 
 // DESCOMENTAR LA LINEA DE ABAJO
-// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /**
  * PASO 3: INTERFAZ DE DATOS
@@ -234,7 +235,7 @@ const getAutos = async (): Promise<void> => {
 
   // DESCOMENTAR ESTAS LINEAS QUE SIGUEN
 
-  /*const { data, error } = await supabase
+  const { data, error } = await supabase
     .from('autos')   
     .select('*');
 
@@ -252,8 +253,7 @@ const getAutos = async (): Promise<void> => {
   console.log("✅ Lista de autos recibida:");
   console.table(listaAutos); 
 
-  HASTA AQUI DEBES DESCOMENTAR
-  */ 
+  
 };
 
 
@@ -273,6 +273,7 @@ const runLaboratory = async () => {
   await fetchSinglePost(POST_ID_TO_SEARCH); 
   await createNewPost();    
   await fetchCommentsByPost(POST_ID_TO_SEARCH);
+  await getAutos();
   //await getAutos();                
   
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
