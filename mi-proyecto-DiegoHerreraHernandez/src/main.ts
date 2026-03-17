@@ -165,7 +165,6 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
     // Tip: Usa data.length.
       console.log("✅ Comentario recuperado:");
       console.log(`   - Total de Comentarios Recuperados: ${data.length}`);
-      console.log(`   - Total de Comentarios Recuperados: ${data.length}`);
 
     // 6. [RECORRIDO]: Usa un método de array (como .forEach) para recorrer la lista.
     // Dentro, imprime solo el 'email' de cada comentario para verificar el tipado.
@@ -273,6 +272,7 @@ const runLaboratory = async () => {
   // Usamos await para que los logs salgan en orden y no se mezclen.
   await fetchSinglePost(POST_ID_TO_SEARCH); 
   await createNewPost();    
+  await fetchCommentsByPost(POST_ID_TO_SEARCH);
   //await getAutos();                
   
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
