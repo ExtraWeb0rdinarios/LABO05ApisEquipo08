@@ -204,17 +204,21 @@ await fetchCommentsByPost(POST_ID_TO_SEARCH);
  * PASO 1: CONFIGURACIÓN DE CONEXIÓN
  * Sustituye estos valores con los de tu proyecto en Supabase (Project Settings > API)
  */
-const SUPABASE_URL: string = "TU_URL_DE_SUPABASE";
-const SUPABASE_KEY: string = "TU_KEY";
+const SUPABASE_URL: string = "https://edowcwplnnnjpybtfcll.supabase.co";
+const SUPABASE_KEY: string = "sb_publishable_JPTg658IAqNhWoEjwJTOXA_8GomTesc";
 
 /**
  * PASO 2: INICIALIZACIÓN DEL CLIENTE
  * Creamos el objeto que nos permite hablar con la base de datos.
  */
+// DESCOMENTAR
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// DESCOMENTAR LA LINEA DE ABAJO
-// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+//FETCH - llama http, ya no genera URL ni ENDPOINT 
+//SUSTITUYEN .from().select()
 
+//SELECT - trae ALL COLUMNS DE LA TABLA Q QUIERES
+//.select('*')
 /**
  * PASO 3: INTERFAZ DE DATOS
  * Definimos la estructura exacta de la tabla que vemos en tu imagen.
@@ -224,26 +228,23 @@ interface Auto {
   patente: string;       // Columna Patente (Varchar)
   id_propietario: number; // Columna ID Propietario (Foreign Key)
 }
-
 /**
  * PASO 4: LA FUNCIÓN DE LECTURA (GET)
  * Esta función entra a la base de datos y trae los registros.
  */
 const getAutos = async (): Promise<void> => {
-  
   // Realizamos la consulta: 
-  // 1. .from('autos') -> Selecciona la tabla de tu imagen.
-  // 2. .select('*')   -> Pide todas las columnas de esa tabla.
+  .from('autos') //-> Selecciona la tabla de tu imagen.
+  .select('*')   //-> Pide todas las columnas de esa tabla.
+  // DESCOMENTAMOS
 
-  // DESCOMENTAR ESTAS LINEAS QUE SIGUEN
-
-  /*const { data, error } = await supabase
+  *const { data, error } = await supabase
     .from('autos')   
     .select('*');
 
   // Si Supabase responde con un error (ej: tabla inexistente o sin permisos RLS)
   if (error) {
-    console.error("❌ Error al obtener los autos:", error.message);
+    console.error("Error. Al obtener los autos:", error.message);
     return;
   }
 
@@ -279,10 +280,5 @@ const runLaboratory = async () => {
   
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
 };
-
-
-
-
-
 // Disparamos todo el proceso.
 runLaboratory();
