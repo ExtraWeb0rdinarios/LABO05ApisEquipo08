@@ -1,4 +1,4 @@
-
+import { createClient } from '@supabase/supabase-js';
 /**
  * PASO 1: DATOS PRIMITIVOS (Configuración base)
  * Definimos valores básicos con tipado explícito para que el compilador sepa 
@@ -194,8 +194,8 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
  * PASO 1: CONFIGURACIÓN DE CONEXIÓN
  * Sustituye estos valores con los de tu proyecto en Supabase (Project Settings > API)
  */
-const SUPABASE_URL: string = "TU_URL_DE_SUPABASE";
-const SUPABASE_KEY: string = "TU_KEY";
+const SUPABASE_URL: string = "https://edowcwplnnnjpybtfcll.supabase.co";
+const SUPABASE_KEY: string = "sb_publishable_JPTg658IAqNhWoEjwJTOXA_8GomTesc";
 
 /**
  * PASO 2: INICIALIZACIÓN DEL CLIENTE
@@ -203,23 +203,23 @@ const SUPABASE_KEY: string = "TU_KEY";
  */
 
 // DESCOMENTAR LA LINEA DE ABAJO
-// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /**
  * PASO 3: INTERFAZ DE DATOS
  * Definimos la estructura exacta de la tabla que vemos en tu imagen.
  */
-interface Auto {
-  id_auto: number;       // Columna ID (Primary Key)
-  patente: string;       // Columna Patente (Varchar)
-  id_propietario: number; // Columna ID Propietario (Foreign Key)
+interface tipo_vacantes {
+  id_tipo_vacante: number;       // Columna ID (Primary Key)
+  descripcion: string;       // Columna Patente (Varchar)
+  nombre: number; // Columna ID Propietario (Foreign Key)
 }
 
 /**
  * PASO 4: LA FUNCIÓN DE LECTURA (GET)
  * Esta función entra a la base de datos y trae los registros.
  */
-const getAutos = async (): Promise<void> => {
+const gettipo_vacantes = async (): Promise<void> => {
   
   // Realizamos la consulta: 
   // 1. .from('autos') -> Selecciona la tabla de tu imagen.
@@ -227,26 +227,26 @@ const getAutos = async (): Promise<void> => {
 
   // DESCOMENTAR ESTAS LINEAS QUE SIGUEN
 
-  /*const { data, error } = await supabase
-    .from('autos')   
+  const { data, error } = await supabase
+    .from('tipo_vacantes')   
     .select('*');
 
   // Si Supabase responde con un error (ej: tabla inexistente o sin permisos RLS)
   if (error) {
-    console.error("❌ Error al obtener los autos:", error.message);
+    console.error("❌ Error al obtener los tipos de vacantes:", error.message);
     return;
   }
 
   // Si todo sale bien, 'data' contiene el array de objetos.
   // Usamos 'as Auto[]' para decirle a TS que confíe en nuestra interfaz.
-  const listaAutos: Auto[] = data as Auto[];
+  const listatipo_vacantes: tipo_vacantes[] = data as tipo_vacantes[];
 
   // Mostramos el resultado final en la consola del navegador
-  console.log("✅ Lista de autos recibida:");
-  console.table(listaAutos); 
+  console.log("✅ Lista de tipos de vacantes recibida:");
+  console.table(listatipo_vacantes); 
 
-  HASTA AQUI DEBES DESCOMENTAR
-  */ 
+  //HASTA AQUI DEBES DESCOMENTAR
+  
 };
 
 
@@ -263,9 +263,11 @@ const runLaboratory = async () => {
   console.log("%c --- INICIO DEL EXPERIMENTO ---", "background: #222; color: #bada55; padding: 5px;");
   
   // Usamos await para que los logs salgan en orden y no se mezclen.
+  await fetchCommentsByPost(POST_ID_TO_SEARCH);
   await fetchSinglePost(POST_ID_TO_SEARCH); 
   await createNewPost();    
-  //await getAutos();                
+  await gettipo_vacantes();               
+
   
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
 };
