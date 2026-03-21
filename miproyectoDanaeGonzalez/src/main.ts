@@ -234,11 +234,11 @@ interface Auto {
  */
 const getAutos = async (): Promise<void> => {
   // Realizamos la consulta: 
-  .from('autos') //-> Selecciona la tabla de tu imagen.
-  .select('*')   //-> Pide todas las columnas de esa tabla.
+  .from('autos') 
+  .select('*')  
   // DESCOMENTAMOS
 
-  *const { data, error } = await supabase
+  const { data, error } = await supabase
     .from('autos')   
     .select('*');
 
@@ -253,18 +253,12 @@ const getAutos = async (): Promise<void> => {
   const listaAutos: Auto[] = data as Auto[];
 
   // Mostramos el resultado final en la consola del navegador
-  console.log("✅ Lista de autos recibida:");
+  console.log("Lista de autos recibida:");
   console.table(listaAutos); 
 
   HASTA AQUI DEBES DESCOMENTAR
   */ 
 };
-
-
-
-
-
-
 
 /**
  * PASO final: EJECUCIÓN DEL LABORATORIO
