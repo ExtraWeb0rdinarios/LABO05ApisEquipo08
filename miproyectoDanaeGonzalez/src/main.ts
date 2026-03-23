@@ -1,4 +1,4 @@
-
+import { createClient } from '@supabase/supabase-js';
 /**
  * PASO 1: DATOS PRIMITIVOS (Configuración base)
  * Definimos valores básicos con tipado explícito para que el compilador sepa 
@@ -181,8 +181,8 @@ console.log(`%c Buscando comentarios... ${postId}...`, "color: blue; font-weight
   //SE COLOCA EL CREAR.VARIABLES("TEXTO", VARIABLE);
   }
 };
-
-await fetchCommentsByPost(POST_ID_TO_SEARCH);
+//IMPORATANTE
+//await fetchCommentsByPost(POST_ID_TO_SEARCH);
 /**
  * PISTA FINAL DE EJECUCIÓN:
  * Dentro de tu función 'runLaboratory', no olvides añadir:
@@ -195,8 +195,6 @@ await fetchCommentsByPost(POST_ID_TO_SEARCH);
     Supabase challenge
 
     #################################################################################
-
-
 
  */
 
@@ -212,7 +210,13 @@ const SUPABASE_KEY: string = "sb_publishable_JPTg658IAqNhWoEjwJTOXA_8GomTesc";
  * Creamos el objeto que nos permite hablar con la base de datos.
  */
 // DESCOMENTAR
+
+//createClient es una función que viene del paquete de Supabase
+//Para usarla, primero debes "importarla" (traerla) al archivo
+//Sin esta línea, TypeScript no sabe qué es createClient y marca error
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+//ME MARCABA ERROR, IMPORTO LA OTRA
+//import { createClient } from '@supabase/supabase-js';
 
 //FETCH - llama http, ya no genera URL ni ENDPOINT 
 //SUSTITUYEN .from().select()
@@ -223,43 +227,35 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
  * PASO 3: INTERFAZ DE DATOS
  * Definimos la estructura exacta de la tabla que vemos en tu imagen.
  */
-interface Auto {
-  id_auto: number;       // Columna ID (Primary Key)
-  patente: string;       // Columna Patente (Varchar)
-  id_propietario: number; // Columna ID Propietario (Foreign Key)
+interface Estudiante {
+  id_alumno: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  fecha_nacimiento: string; // DATE → string
+  semestre: number;
+  creditos: number;
 }
 /**
  * PASO 4: LA FUNCIÓN DE LECTURA (GET)
  * Esta función entra a la base de datos y trae los registros.
  */
-const getAutos = async (): Promise<void> => {
-  // Realizamos la consulta: 
-  .from('autos') 
-  .select('*')  
-  // DESCOMENTAMOS
+const getEstudiantes = async (): Promise<void> => {
 
   const { data, error } = await supabase
-    .from('autos')   
+    .from('estudiantes') // 👈 nombre EXACTO de tu tabla
     .select('*');
 
-  // Si Supabase responde con un error (ej: tabla inexistente o sin permisos RLS)
   if (error) {
-    console.error("Error. Al obtener los autos:", error.message);
+    console.error("❌ Error al obtener estudiantes:", error.message);
     return;
   }
 
-  // Si todo sale bien, 'data' contiene el array de objetos.
-  // Usamos 'as Auto[]' para decirle a TS que confíe en nuestra interfaz.
-  const listaAutos: Auto[] = data as Auto[];
+  const listaEstudiantes = data as Estudiante[];
 
-  // Mostramos el resultado final en la consola del navegador
-  console.log("Lista de autos recibida:");
-  console.table(listaAutos); 
-
-  HASTA AQUI DEBES DESCOMENTAR
-  */ 
+  console.log("✅ Lista de estudiantes:");
+  console.table(listaEstudiantes);
 };
-
 /**
  * PASO final: EJECUCIÓN DEL LABORATORIO
  * Creamos una función orquestadora para manejar el flujo de las llamadas.
@@ -267,12 +263,11 @@ const getAutos = async (): Promise<void> => {
 const runLaboratory = async () => {
   console.log("%c --- INICIO DEL EXPERIMENTO ---", "background: #222; color: #bada55; padding: 5px;");
   
-  // Usamos await para que los logs salgan en orden y no se mezclen.
   await fetchSinglePost(POST_ID_TO_SEARCH); 
   await createNewPost();    
-  //await getAutos();                
-  
+  await fetchCommentsByPost(POST_ID_TO_SEARCH); 
+  await getEstudiantes();   // ✅ ESTE ES EL IMPORTANTE
+                
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
 };
 // Disparamos todo el proceso.
-runLaboratory();
