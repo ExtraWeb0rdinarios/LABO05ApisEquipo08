@@ -218,9 +218,10 @@ const SUPABASE_KEY: string = "sb_publishable_JPTg658IAqNhWoEjwJTOXA_8GomTesc";
  * Definimos la estructura exacta de la tabla que vemos en tu imagen.
  */
 interface Auto {
-  id_auto: number;       // Columna ID (Primary Key)
-  patente: string;       // Columna Patente (Varchar)
-  id_propietario: number; // Columna ID Propietario (Foreign Key)
+  id_encargado: number;       // Columna ID (Primary Key)
+  tipo_encargado: string;       // Columna Patente (Varchar)
+  email: string; 
+  nombre: string;// Columna ID Propietario (Foreign Key)
 }
 
 /**
@@ -236,7 +237,7 @@ const getAutos = async (): Promise<void> => {
   // DESCOMENTAR ESTAS LINEAS QUE SIGUEN
 
   const { data, error } = await supabase
-    .from('autos')   
+    .from('encargados')   
     .select('*');
 
   // Si Supabase responde con un error (ej: tabla inexistente o sin permisos RLS)
